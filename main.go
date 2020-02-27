@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -33,6 +34,12 @@ func main() {
 
 	r.Route("/store", func(r chi.Router) {
 		store.HandleRoutes(r)
+	})
+
+	r.Get("/testStore", func(w http.ResponseWriter, r *http.Request) {
+		toReturn, _ := json.Marshal(storeItem)
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(toReturn))
 	})
 
 	http.ListenAndServe(":3000", r)
