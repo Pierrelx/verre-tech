@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	db "github.com/PierreLx/verre-tech/services/database"
 	st "github.com/PierreLx/verre-tech/structs/stores"
 
 	"github.com/go-chi/chi"
@@ -47,7 +48,7 @@ func GetAllStores(w http.ResponseWriter, r *http.Request) {
 
 //CreateStore permet de créer un magasin
 func CreateStore(store st.Store) (bool, error) {
-	return true, nil
+	return db.InsertStore(store)
 }
 
 //UpdateStore permet de faire la mise à jour d'un magasin

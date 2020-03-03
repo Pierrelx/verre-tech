@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	db "github.com/PierreLx/verre-tech/services"
+	db "github.com/PierreLx/verre-tech/services/database"
 	store "github.com/PierreLx/verre-tech/stores"
 	storeSt "github.com/PierreLx/verre-tech/structs/stores"
 
