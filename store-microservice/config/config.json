@@ -1,0 +1,11 @@
+{
+    "logFilename": "logs/server.log",
+    "logMaxSize": 20,
+    "logMaxBackups": 10,
+    "logMaxAge": 30,
+
+    "dbAddress": "127.0.0.1:5432",
+    "dbName": "verre-tech",
+    "dbUserName": "postgres",
+    "dbPassword": "JuVT75XX"
+}
