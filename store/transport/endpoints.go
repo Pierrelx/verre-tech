@@ -12,6 +12,8 @@ import (
 type Endpoints struct {
 	Create  endpoint.Endpoint
 	GetByID endpoint.Endpoint
+	Update  endpoint.Endpoint
+	Delete  endpoint.Endpoint
 }
 
 //MakeEndpoints instancie les endpoints
@@ -19,6 +21,8 @@ func MakeEndpoints(s store.Service) Endpoints {
 	return Endpoints{
 		Create:  makeCreateEndpoint(s),
 		GetByID: makeGetByIDEndpoint(s),
+		Update:  makeUpdateEndpoints(s),
+		Delete:  makeDeleteEndpoints(s),
 	}
 }
 
@@ -35,5 +39,21 @@ func makeGetByIDEndpoint(s store.Service) endpoint.Endpoint {
 		req := request.(GetByIDRequest)
 		storeRes, err := s.GetByID(ctx, req.ID)
 		return GetByIDResponse{Store: storeRes, Err: err}, nil
+	}
+}
+
+func makeUpdateEndpoints(s store.Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(UpdateRequest)
+		storeRes, err := s.UpdateStore(ctx, req.Store)
+		return GetByIDResponse{Store: storeRes, Err: err}, nil
+	}
+}
+
+func makeDeleteEndpoints(s store.Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(DeleteRequest)
+		err := s.DeleteStore(ctx, req.ID)
+		return DeleteResponse{Err: err}, nil
 	}
 }

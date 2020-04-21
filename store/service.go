@@ -18,4 +18,6 @@ var (
 type Service interface {
 	Create(ctx context.Context, store Store) (int64, error)
 	GetByID(ctx context.Context, id int) (Store, error)
+	UpdateStore(ctx context.Context, store Store) (Store, error)
+	DeleteStore(ctx context.Context, id int) error
 }

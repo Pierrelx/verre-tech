@@ -60,3 +60,31 @@ func (repo *repository) GetStoreByID(ctx context.Context, id int) (store.Store, 
 	}
 	return store, err
 }
+
+func (repo *repository) UpdateStore(ctx context.Context, store store.Store) (store.Store, error) {
+	stmt, err := repo.db.Prepare("UPDATE store SET name = $1, address = $2, postal_code = $3, county = $4, city = $5, type = $6, latitude = $7, longitude = $8, created_on = $9, updated_on = $10 WHERE id = $11")
+	if err != nil {
+		println(err.Error())
+		return store, err
+	}
+	defer stmt.Close()
+	err = stmt.QueryRow(store.Name, store.Address, store.PostalCode, store.County, store.City, store.Type, store.Latitude, store.Longitude, store.CreatedOn, store.UpdatedOn, store.ID).Scan(&store.ID, &store.Name, &store.Address, &store.PostalCode, &store.County, &store.City, &store.Type, &store.Latitude, &store.Longitude, &store.CreatedOn, &store.UpdatedOn)
+	if err != nil {
+		println(err.Error())
+		return store, nil
+	}
+	return store, err
+}
+
+func (repo *repository) DeleteStore(ctx context.Context, id int) error {
+	stmt, err := repo.db.Prepare("DELETE FROM store WHERE id = $1")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -25,3 +25,24 @@ type GetByIDResponse struct {
 	Store store.Store `json:"store"`
 	Err   error       `json:"error,omitempty"`
 }
+
+//UpdateRequest est le corps d'une requête d'update
+type UpdateRequest struct {
+	Store store.Store `json:"store"`
+}
+
+//UpdateResponse est le corps d'une réponse d'update
+type UpdateResponse struct {
+	Store store.Store `json:"store"`
+	Err   error       `json:"error"`
+}
+
+//DeleteRequest est le corps d'une requête de suppression
+type DeleteRequest struct {
+	ID int `json:"id"`
+}
+
+//DeleteResponse est le corps de la réponse de suppression
+type DeleteResponse struct {
+	Err error `json:"error"`
+}

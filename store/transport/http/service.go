@@ -43,6 +43,20 @@ func NewService(svcEndpoints transport.Endpoints, options []kithttp.ServerOption
 		options...,
 	))
 
+	r.Methods("POST").Path("/stores/update").Handler(kithttp.NewServer(
+		svcEndpoints.Update,
+		decodeUpdateRequest,
+		encodeResponse,
+		options...,
+	))
+
+	r.Methods("DELETE").Path("/stores/{id}").Handler(kithttp.NewServer(
+		svcEndpoints.Delete,
+		decodeDeleteRequest,
+		encodeResponse,
+		options...,
+	))
+
 	return r
 }
 
@@ -62,6 +76,29 @@ func decodeGetByIDRequest(_ context.Context, r *http.Request) (request interface
 		return nil, ErrBadRouting
 	}
 	return transport.GetByIDRequest{ID: idInt}, nil
+}
+
+func decodeUpdateRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
+	decoder := json.NewDecoder(r.Body)
+	decoder.DisallowUnknownFields()
+	var store store.Store
+	err = decoder.Decode(&store)
+	print(r.Body)
+	if err != nil {
+		return store, err
+	}
+	println("Magasin : " + store.Name)
+	return transport.UpdateRequest{Store: store}, nil
+}
+
+func decodeDeleteRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
+	vars := mux.Vars(r)
+	id, ok := vars["id"]
+	idInt, err := strconv.Atoi(id)
+	if !ok {
+		return nil, ErrBadRouting
+	}
+	return transport.DeleteRequest{ID: idInt}, nil
 }
 
 func encodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {

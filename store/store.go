@@ -21,4 +21,6 @@ type Store struct {
 type Repository interface {
 	CreateStore(ctx context.Context, store Store) (int64, error)
 	GetStoreByID(ctx context.Context, id int) (Store, error)
+	UpdateStore(ctx context.Context, store Store) (Store, error)
+	DeleteStore(ctx context.Context, id int) error
 }

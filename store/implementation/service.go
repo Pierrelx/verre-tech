@@ -46,3 +46,29 @@ func (s *service) GetByID(ctx context.Context, id int) (storesvc.Store, error) {
 	}
 	return store, nil
 }
+
+func (s *service) UpdateStore(ctx context.Context, store storesvc.Store) (storesvc.Store, error) {
+	logger := log.With(s.logger, "method", "Update")
+	store, err := s.repository.UpdateStore(ctx, store)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		if err == sql.ErrNoRows {
+			return store, storesvc.ErrStoreNotFound
+		}
+		return store, storesvc.ErrQueryRepository
+	}
+	return store, nil
+}
+
+func (s *service) DeleteStore(ctx context.Context, id int) error {
+	logger := log.With(s.logger, "method", "Delete")
+	err := s.repository.DeleteStore(ctx, id)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		if err == sql.ErrNoRows {
+			return storesvc.ErrStoreNotFound
+		}
+		return storesvc.ErrQueryRepository
+	}
+	return nil
+}
