@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-kit/kit/endpoint"
 
-	"github.com/PierreLx/verre-tech-ms/store"
+	"github.com/PierreLx/verre-tech/store"
 )
 
 //Endpoints représente un go kit endpoint
@@ -14,6 +14,7 @@ type Endpoints struct {
 	GetByID endpoint.Endpoint
 	Update  endpoint.Endpoint
 	Delete  endpoint.Endpoint
+	GetAll  endpoint.Endpoint
 }
 
 //MakeEndpoints instancie les endpoints
@@ -23,6 +24,7 @@ func MakeEndpoints(s store.Service) Endpoints {
 		GetByID: makeGetByIDEndpoint(s),
 		Update:  makeUpdateEndpoints(s),
 		Delete:  makeDeleteEndpoints(s),
+		GetAll:  makeGetAllEndpoints(s),
 	}
 }
 
@@ -55,5 +57,12 @@ func makeDeleteEndpoints(s store.Service) endpoint.Endpoint {
 		req := request.(DeleteRequest)
 		err := s.DeleteStore(ctx, req.ID)
 		return DeleteResponse{Err: err}, nil
+	}
+}
+
+func makeGetAllEndpoints(s store.Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		stores, err := s.GetAll(ctx)
+		return ListStoreResponse{Stores: stores, Err: err}, nil
 	}
 }

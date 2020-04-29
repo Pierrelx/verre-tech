@@ -5,7 +5,8 @@ import (
 	"database/sql"
 	"time"
 
-	storesvc "github.com/PierreLx/verre-tech-ms/store"
+	"github.com/PierreLx/verre-tech/store"
+	storesvc "github.com/PierreLx/verre-tech/store"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 )
@@ -71,4 +72,17 @@ func (s *service) DeleteStore(ctx context.Context, id int) error {
 		return storesvc.ErrQueryRepository
 	}
 	return nil
+}
+
+func (s *service) GetAll(ctx context.Context) ([]*store.Store, error) {
+	logger := log.With(s.logger, "method", "GetAll")
+	stores, err := s.repository.GetAll(ctx)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		if err == sql.ErrNoRows {
+			return stores, sql.ErrNoRows
+		}
+		return stores, storesvc.ErrQueryRepository
+	}
+	return stores, err
 }

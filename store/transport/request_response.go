@@ -1,7 +1,7 @@
 package transport
 
 import (
-	"github.com/PierreLx/verre-tech-ms/store"
+	"github.com/PierreLx/verre-tech/store"
 )
 
 //CreateRequest avec les paramètres pour la création d'un magasin
@@ -45,4 +45,14 @@ type DeleteRequest struct {
 //DeleteResponse est le corps de la réponse de suppression
 type DeleteResponse struct {
 	Err error `json:"error"`
+}
+
+//GetAllRequest est le corps de la requête de liste
+type GetAllRequest struct {
+}
+
+//ListStoreResponse est le corps de la réponse de liste des magasins
+type ListStoreResponse struct {
+	Stores []*store.Store `json:"stores"`
+	Err    error          `json:"error"`
 }

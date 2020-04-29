@@ -9,7 +9,7 @@ import (
 	//pq driver pour le sql
 	_ "github.com/lib/pq"
 
-	"github.com/PierreLx/verre-tech-ms/store"
+	"github.com/PierreLx/verre-tech/store"
 )
 
 var (
@@ -87,4 +87,22 @@ func (repo *repository) DeleteStore(ctx context.Context, id int) error {
 		return err
 	}
 	return nil
+}
+
+func (repo *repository) GetAll(ctx context.Context) ([]*store.Store, error) {
+	stores := make([]*store.Store, 0)
+	rows, err := repo.db.Query("SELECT * FROM store")
+	if err != nil {
+		return stores, ErrRepository
+	}
+	defer rows.Close()
+	for rows.Next() {
+		store := new(store.Store)
+		err := rows.Scan(&store.ID, &store.City, &store.Address, &store.PostalCode, &store.Latitude, &store.Longitude, &store.Type, &store.Name, &store.County, &store.CreatedOn, &store.UpdatedOn)
+		if err != nil {
+			return stores, err
+		}
+		stores = append(stores, store)
+	}
+	return stores, err
 }

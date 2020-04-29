@@ -20,4 +20,5 @@ type Service interface {
 	GetByID(ctx context.Context, id int) (Store, error)
 	UpdateStore(ctx context.Context, store Store) (Store, error)
 	DeleteStore(ctx context.Context, id int) error
+	GetAll(ctx context.Context) ([]*Store, error)
 }

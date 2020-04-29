@@ -11,8 +11,8 @@ import (
 	kithttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 
-	"github.com/PierreLx/verre-tech-ms/store"
-	"github.com/PierreLx/verre-tech-ms/store/transport"
+	"github.com/PierreLx/verre-tech/store"
+	"github.com/PierreLx/verre-tech/store/transport"
 )
 
 var (
@@ -36,9 +36,16 @@ func NewService(svcEndpoints transport.Endpoints, options []kithttp.ServerOption
 		options...,
 	))
 
-	r.Methods("GET").Path("/stores/{id}").Handler(kithttp.NewServer(
+	r.Methods("GET").Path("/store/{id}").Handler(kithttp.NewServer(
 		svcEndpoints.GetByID,
 		decodeGetByIDRequest,
+		encodeResponse,
+		options...,
+	))
+
+	r.Methods("GET").Path("/stores/list").Handler(kithttp.NewServer(
+		svcEndpoints.GetAll,
+		decodeGetAllRequest,
 		encodeResponse,
 		options...,
 	))
@@ -99,6 +106,10 @@ func decodeDeleteRequest(_ context.Context, r *http.Request) (request interface{
 		return nil, ErrBadRouting
 	}
 	return transport.DeleteRequest{ID: idInt}, nil
+}
+
+func decodeGetAllRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
+	return transport.GetAllRequest{}, nil
 }
 
 func encodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
