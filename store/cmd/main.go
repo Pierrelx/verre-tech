@@ -41,7 +41,7 @@ func main() {
 	var db *sql.DB
 	{
 		var err error
-		db, err = sql.Open("postgres", "port=5432 host=localhost user=postgres password=JuVT75XX dbname=VerreTech sslmode=disable")
+		db, err = sql.Open("postgres", "port=5432 host=176.132.70.65 user=vtuser password=vt2020@oid78 dbname=verre_tech sslmode=disable")
 		if err != nil {
 			level.Error(logger).Log("exit", err)
 			os.Exit(-1)
