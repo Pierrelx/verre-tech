@@ -23,6 +23,9 @@ WORKDIR /root/
 COPY --from=builder /app/main .
 COPY --from=builder /app/env .
 
+RUN go get -d -v ./
+RUN go install -v ./
+
 EXPOSE 8080
 
 CMD ["./main"]

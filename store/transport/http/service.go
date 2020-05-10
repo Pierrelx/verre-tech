@@ -29,7 +29,7 @@ func NewService(svcEndpoints transport.Endpoints, options []kithttp.ServerOption
 	)
 	options = append(options, errorLogger, errorEncoder)
 
-	r.Methods("POST").Path("/stores").Handler(kithttp.NewServer(
+	r.Methods("POST").Path("/store").Handler(kithttp.NewServer(
 		svcEndpoints.Create,
 		decodeCreateRequest,
 		encodeResponse,
@@ -43,21 +43,21 @@ func NewService(svcEndpoints transport.Endpoints, options []kithttp.ServerOption
 		options...,
 	))
 
-	r.Methods("GET").Path("/stores/list").Handler(kithttp.NewServer(
+	r.Methods("GET").Path("/store/list").Handler(kithttp.NewServer(
 		svcEndpoints.GetAll,
 		decodeGetAllRequest,
 		encodeResponse,
 		options...,
 	))
 
-	r.Methods("POST").Path("/stores/update").Handler(kithttp.NewServer(
+	r.Methods("POST").Path("/store/update").Handler(kithttp.NewServer(
 		svcEndpoints.Update,
 		decodeUpdateRequest,
 		encodeResponse,
 		options...,
 	))
 
-	r.Methods("DELETE").Path("/stores/{id}").Handler(kithttp.NewServer(
+	r.Methods("DELETE").Path("/store/{id}").Handler(kithttp.NewServer(
 		svcEndpoints.Delete,
 		decodeDeleteRequest,
 		encodeResponse,
@@ -143,4 +143,18 @@ func codeFrom(err error) int {
 	default:
 		return http.StatusInternalServerError
 	}
+}
+
+func accessControl(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type")
+
+		if r.Method == "OPTIONS" {
+			return
+		}
+
+		h.ServeHTTP(w, r)
+	})
 }

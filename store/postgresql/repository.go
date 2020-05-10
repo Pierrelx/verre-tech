@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"time"
 
 	"github.com/go-kit/kit/log"
 	//pq driver pour le sql
@@ -31,11 +32,13 @@ func New(db *sql.DB, logger log.Logger) (store.Repository, error) {
 }
 
 func (repo *repository) CreateStore(ctx context.Context, store store.Store) (int64, error) {
-	stmt, err := repo.db.Prepare("INSERT INTO stores(name, address, postal_code, county, city, type, latitude, longitude, created_on, updated_on) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id AS id")
+	stmt, err := repo.db.Prepare("INSERT INTO stores(name, address, postal_code, county, city, type, latitude, longitude, created_on_utc, updated_on_utc) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id AS id")
 	if err != nil {
 		return 0, err
 	}
 	defer stmt.Close()
+	store.CreatedOn = time.Now().Unix()
+	store.UpdatedOn = time.Now().Unix()
 	res, err := stmt.Exec(store.Name, store.Address, store.PostalCode, store.County, store.City, store.Type, store.Latitude, store.Longitude, store.CreatedOn, store.UpdatedOn)
 	if err != nil {
 		return 0, err
@@ -49,7 +52,7 @@ func (repo *repository) CreateStore(ctx context.Context, store store.Store) (int
 
 func (repo *repository) GetStoreByID(ctx context.Context, id int) (store.Store, error) {
 	var store store.Store
-	stmt, err := repo.db.Prepare("SELECT id, name, address, postal_code, county, city, type, latitude, longitude, created_on, updated_on FROM stores WHERE id = $1")
+	stmt, err := repo.db.Prepare("SELECT id, name, address, postal_code, county, city, type, latitude, longitude, created_on_utc, updated_on_utc FROM stores WHERE id = $1")
 	if err != nil {
 		return store, err
 	}
@@ -62,12 +65,13 @@ func (repo *repository) GetStoreByID(ctx context.Context, id int) (store.Store, 
 }
 
 func (repo *repository) UpdateStore(ctx context.Context, store store.Store) (store.Store, error) {
-	stmt, err := repo.db.Prepare("UPDATE stores SET name = $1, address = $2, postal_code = $3, county = $4, city = $5, type = $6, latitude = $7, longitude = $8, created_on = $9, updated_on = $10 WHERE id = $11")
+	stmt, err := repo.db.Prepare("UPDATE stores SET name = $1, address = $2, postal_code = $3, county = $4, city = $5, type = $6, latitude = $7, longitude = $8, created_on_utc = $9, updated_on_utc = $10 WHERE id = $11")
 	if err != nil {
 		println(err.Error())
 		return store, err
 	}
 	defer stmt.Close()
+	store.UpdatedOn = time.Now().Unix()
 	err = stmt.QueryRow(store.Name, store.Address, store.PostalCode, store.County, store.City, store.Type, store.Latitude, store.Longitude, store.CreatedOn, store.UpdatedOn, store.ID).Scan(&store.ID, &store.Name, &store.Address, &store.PostalCode, &store.County, &store.City, &store.Type, &store.Latitude, &store.Longitude, &store.CreatedOn, &store.UpdatedOn)
 	if err != nil {
 		println(err.Error())

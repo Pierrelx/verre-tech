@@ -18,11 +18,12 @@ import (
 	"github.com/go-kit/kit/log/level"
 	kitoc "github.com/go-kit/kit/tracing/opencensus"
 	kithttp "github.com/go-kit/kit/transport/http"
+	"github.com/rs/cors"
 )
 
 func main() {
 	var (
-		httpAddr = flag.String("http.addr", "localhost:8080", "HTTP listen address")
+		httpAddr = flag.String("http.addr", "localhost:3000", "HTTP listen address")
 	)
 	flag.Parse()
 
@@ -59,6 +60,12 @@ func main() {
 		svc = storesvc.NewService(repository, logger)
 	}
 
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://localhost:4200"},
+		AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodDelete},
+		Debug:          false,
+	})
+
 	var h http.Handler
 	{
 		endpoints := transport.MakeEndpoints(svc)
@@ -66,6 +73,8 @@ func main() {
 		serverOptions := []kithttp.ServerOption{ocTracing}
 		h = httptransport.NewService(endpoints, serverOptions, logger)
 	}
+
+	h = c.Handler(h)
 
 	errs := make(chan error)
 	go func() {
