@@ -18,10 +18,10 @@ services:
         image: postgres:latest
         container_name: db_postgres
         environment:
-            - POSTGRES_USER=${vtuser}  
-            - POSTGRES_PASSWORD=${vt2020@oid78}
-            - POSTGRES_DB=${verre_tech}
-            - DATABASE_HOST=${localhost} 
+            - POSTGRES_USER=vtuser  
+            - POSTGRES_PASSWORD=vt2020@oid78
+            - POSTGRES_DB=verre_tech
+            - DATABASE_HOST=localhost 
         ports:
             - '5432:5432'
         volumes:
