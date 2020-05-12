@@ -2,14 +2,14 @@ version: '3.3'
 services:
     app:
         container_name: verre-tech
-        build: 1.0
+        build: .
         ports: 
-            -8080:8080
+            - 8080:8080
         restart: on-failure
         volumes:
-            - seller:/home/vt/seller/
+            - store:/home/vt/store/
         depends_on: 
-            - fullstack-postgres
+            - postgres
         networks:
             - fullstack
 
@@ -30,10 +30,10 @@ services:
             - fullstack
         restart: unless-stopped
 
-    volumes:
-        api: 
-        database_postgres:  
+volumes:
+    store: 
+    database_postgres:  
 
-    networks:
-        fullstack:
-            driver: bridge
+networks:
+    fullstack:
+        driver: bridge

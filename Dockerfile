@@ -2,29 +2,11 @@ FROM golang:alpine as builder
 
 LABEL maintainer="Pierre Leroux Gatien Montreuil Luigi Croni"
 
-RUN apk update && apk add --no-cache git
+ADD . /go/src/github.com/Pierrelx/verre-tech
 
-WORKDIR /app
+RUN go install github.com/Pierrelx/verre-tech/store/cmd
 
-COPY go.mod go.sum ./
-
-RUN go mod download
-
-COPY . .
-
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
-
-FROM alpine:latest
-
-RUN apk --no-cache add ca-certificates
-
-WORKDIR /root/
-
-COPY --from=builder /app/main .
-COPY --from=builder /app/env .
-
-RUN go get -d -v ./
-RUN go install -v ./
+ENTRYPOINT /go/bin/verre-tech/store/cmd
 
 EXPOSE 8080
 
