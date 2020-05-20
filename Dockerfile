@@ -1,13 +1,29 @@
-FROM golang:alpine as builder
+FROM golang:alpine AS builder
 
-LABEL maintainer="Pierre Leroux Gatien Montreuil Luigi Croni"
+ENV GO111MODULE=on \
+    CGO_ENABLED=1 \
+    GOOS=linux
 
-ADD . /go/src/github.com/Pierrelx/verre-tech
+WORKDIR /build
 
-RUN go install github.com/Pierrelx/verre-tech/store/cmd
+COPY go.mod .
+COPY go.sum .
 
-ENTRYPOINT /go/bin/verre-tech/store/cmd
+RUN go mod download
 
+COPY ./store .
+
+RUN go build -o store/cmd .
+RUN chmod +x ./store/cmd 
 EXPOSE 8080
 
-CMD ["./main"]
+CMD ["./store/cmd"]
+#https://www.callicoder.com/docker-compose-multi-container-orchestration-golang/
+
+#https://medium.com/tourradar/lean-golang-docker-images-using-multi-stage-builds-1015a6b4d1d1
+
+#https://opensource.com/article/19/5/source-image-golang-part-2
+
+#https://dev.to/ivan/go-build-a-minimal-docker-image-in-just-three-steps-514i
+
+#https://stackoverflow.com/questions/50865880/building-golang-project-in-docker-cannot-find-package-in-any-of-gopath-or-go/50884748

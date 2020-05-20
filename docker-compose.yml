@@ -2,12 +2,14 @@ version: '3.3'
 services:
     app:
         container_name: verre-tech
-        build: .
+        build: 
+            context: .
+            dockerfile: Dockerfile
         ports: 
             - 8080:8080
-        restart: on-failure
+        # restart: on-failure
         volumes:
-            - store:/home/vt/store/
+            - store:/store
         depends_on: 
             - postgres
         networks:
