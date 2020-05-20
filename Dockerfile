@@ -15,7 +15,7 @@ COPY ./store .
 
 RUN go build -o store/cmd .
 RUN chmod +x ./store/cmd 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD ["./store/cmd"]
 #https://www.callicoder.com/docker-compose-multi-container-orchestration-golang/
