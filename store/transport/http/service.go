@@ -43,7 +43,7 @@ func NewService(svcEndpoints transport.Endpoints, options []kithttp.ServerOption
 		options...,
 	))
 
-	r.Methods("GET").Path("/store/list").Handler(kithttp.NewServer(
+	r.Methods("GET").Path("/stores").Handler(kithttp.NewServer(
 		svcEndpoints.GetAll,
 		decodeGetAllRequest,
 		encodeResponse,
