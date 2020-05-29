@@ -10,6 +10,7 @@ import (
 	"syscall"
 
 	"github.com/PierreLx/verre-tech/store"
+	// "github.com/PierreLx/verre-tech/store/faker"
 	storesvc "github.com/PierreLx/verre-tech/store/implementation"
 	"github.com/PierreLx/verre-tech/store/postgresql"
 	"github.com/PierreLx/verre-tech/store/transport"
@@ -47,6 +48,7 @@ func main() {
 			level.Error(logger).Log("exit", err)
 			os.Exit(-1)
 		}
+		// faker.FakeStore()
 	}
 
 	var svc store.Service

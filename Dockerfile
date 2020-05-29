@@ -1,8 +1,8 @@
-FROM golang:latest AS builder
+FROM amd64/golang:1.14 AS builder
 
-ENV GO111MODULE=on \
-    CGO_ENABLED=1 \
-    GOOS=linux
+# ENV GO111MODULE=ON \
+#     CGO_ENABLED=1 \
+#     GOOS=LINUX
 
 WORKDIR /build
 
@@ -18,6 +18,7 @@ RUN chmod +x ./store/cmd
 EXPOSE 8081
 
 CMD ["./store/cmd"]
+
 #https://www.callicoder.com/docker-compose-multi-container-orchestration-golang/
 
 #https://medium.com/tourradar/lean-golang-docker-images-using-multi-stage-builds-1015a6b4d1d1
