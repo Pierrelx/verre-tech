@@ -16,7 +16,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o github.com/Pierrelx/verre-tech/store/cmd .
+RUN go build -o store/cmd .
 # RUN chmod +x /store/cmd 
 
 EXPOSE 8081
