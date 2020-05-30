@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/PierreLx/verre-tech/store"
-	storesvc "github.com/PierreLx/verre-tech/store"
+	"github.com/Pierrelx/verre-tech/store"
+	storesvc "github.com/Pierrelx/verre-tech/store"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 )

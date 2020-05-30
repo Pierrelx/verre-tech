@@ -11,8 +11,8 @@ import (
 	kithttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 
-	"github.com/PierreLx/verre-tech/store"
-	"github.com/PierreLx/verre-tech/store/transport"
+	"github.com/Pierrelx/verre-tech/store"
+	"github.com/Pierrelx/verre-tech/store/transport"
 )
 
 var (

@@ -5,7 +5,7 @@
 
 // 	"database/sql"
 
-// 	store "github.com/PierreLx/verre-tech/store"
+// 	store "github.com/Pierrelx/verre-tech/store"
 // 	"github.com/icrowley/fake"
 
 // 	//pq driver pour le sql

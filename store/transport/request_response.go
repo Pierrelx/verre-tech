@@ -1,7 +1,7 @@
 package transport
 
 import (
-	"github.com/PierreLx/verre-tech/store"
+	"github.com/Pierrelx/verre-tech/store"
 )
 
 //CreateRequest avec les paramètres pour la création d'un magasin

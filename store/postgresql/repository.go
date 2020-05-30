@@ -10,7 +10,7 @@ import (
 	//pq driver pour le sql
 	_ "github.com/lib/pq"
 
-	"github.com/PierreLx/verre-tech/store"
+	"github.com/Pierrelx/verre-tech/store"
 )
 
 var (

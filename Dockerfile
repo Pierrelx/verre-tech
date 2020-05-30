@@ -1,20 +1,24 @@
-FROM amd64/golang:1.14 AS builder
+FROM golang:1.12-alpine AS builder
 
 # ENV GO111MODULE=ON \
 #     CGO_ENABLED=1 \
 #     GOOS=LINUX
 
-WORKDIR /build
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+
+WORKDIR /app
 
 COPY go.mod .
 COPY go.sum .
 
 RUN go mod download
 
-COPY ./store .
+COPY . .
 
-RUN go build -o store/cmd .
-RUN chmod +x ./store/cmd 
+RUN go build -o github.com/Pierrelx/verre-tech/store/cmd .
+# RUN chmod +x /store/cmd 
+
 EXPOSE 8081
 
 CMD ["./store/cmd"]

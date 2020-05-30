@@ -1,6 +1,7 @@
 version: '3.3'
 services:
     app:
+        image: gotest
         container_name: verre-tech
         build: 
             context: .

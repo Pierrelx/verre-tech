@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-kit/kit/endpoint"
 
-	"github.com/PierreLx/verre-tech/store"
+	"github.com/Pierrelx/verre-tech/store"
 )
 
 //Endpoints représente un go kit endpoint
