@@ -28,8 +28,8 @@ func (s *service) Create(ctx context.Context, store storesvc.Store) (int64, erro
 	logger := log.With(s.logger, "method", "Create")
 	store.CreatedOn = time.Now().Unix()
 	store.UpdatedOn = time.Now().Unix()
-	var id int64
-	if id, err := s.repository.CreateStore(ctx, store); err != nil {
+	id, err := s.repository.CreateStore(ctx, store)
+	if err != nil {
 		level.Error(logger).Log("err", err)
 		return id, storesvc.ErrCmdRepository
 	}
